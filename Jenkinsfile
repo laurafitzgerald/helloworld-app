@@ -46,7 +46,7 @@ node(platform) {
     stage("Build") {
         if (platform == 'ios') {
            loadDeveloperProfile(
-                profileID:"${PROFILE_ID}"
+                profileID:"${CODE_SIGN_PROFILE_ID}"
         )
 
         }
@@ -54,6 +54,9 @@ node(platform) {
             sh "cordova build ${platform} --debug"
         } else {
             sh "cordova build ${platform} --release"
+        }
+        if (platform == 'ios') {
+           unloadDeveloperProfile()
         }
     }
 
