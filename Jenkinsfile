@@ -55,9 +55,6 @@ node(platform) {
         } else {
             sh "cordova build ${platform} --release"
         }
-        if (platform == 'ios') {
-           unloadDeveloperProfile()
-        }
     }
 
     stage("Sign") {
