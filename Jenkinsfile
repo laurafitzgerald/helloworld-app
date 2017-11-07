@@ -44,28 +44,16 @@ node(platform) {
     }
 
     stage("Build") {
-        if (platform == 'android') {
-            if (BUILD_CONFIG == 'debug') {
-                sh "cordova build ${platform} --debug"
-            } else {
-                sh "cordova build ${platform} --release"
-            }
+        if (platform == 'ios') {
+           loadDeveloperProfile(
+                profileID:"${PROFILE_ID}"
+        )
+
+        }
+        if (BUILD_CONFIG == 'debug') {
+            sh "cordova build ${platform} --debug"
         } else {
-            xcodeBuild(
-                cleanBeforeBuild: CLEAN,
-                src: "./platforms/${platform}",
-                schema: "${PROJECT_NAME}",
-                workspace: "${PROJECT_NAME}",
-                buildDir: "build",
-                sdk: "${SDK}",
-                version: "${VERSION}",
-                shortVersion: "${SHORT_VERSION}",
-                bundleId: "${BUNDLE_ID}",
-                infoPlistPath: "${INFO_PLIST}",
-                xcodeBuildArgs: 'ENABLE_BITCODE=NO OTHER_CFLAGS="-fstack-protector -fstack-protector-all"',
-                autoSign: false,
-                config: "${OSX_BUILD_CONFIG}"
-            )
+            sh "cordova build ${platform} --release"
         }
     }
 
